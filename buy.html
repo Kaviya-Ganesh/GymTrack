@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Buy Items</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f8f9fa; color: #333; }
+        h1 { color: #007bff; }
+        .message { padding: 10px; }
+        ul { list-style-type: none; padding: 0; }
+    </style>
+</head>
+<body>
+    <h1>Buy Items</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <p class="{{ category }} message">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <form method="post">
+        <label for="category">Filter by Category:</label>
+        <select name="category" id="category">
+            <option value="">All</option>
+            <option value="Books">Books</option>
+            <option value="Clothes">Clothes</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Makeup">Makeup</option>
+            <option value="Skincare">Skincare</option>
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+    <h2>Available Items</h2>
+    {% if items %}
+        <ul>
+        {% for item in items %}
+            <li>{{ item[1] }} ({{ item[2] }}) - ${{ item[3] }} - {{ item[4] }} - Listed: {{ item[6] }}
+                <form method="post" action="{{ url_for('buy_item', item_id=item[0]) }}">
+                    <button type="submit">Buy</button>
+                </form>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No items available.</p>
+    {% endif %}
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f8f9fa; color: #333; }
+        h1 { color: #007bff; }
+        .message { padding: 10px; }
+        ul { list-style-type: none; padding: 0; }
+    </style>
+</head>
+<body>
+    <h1>Welcome, {{ email }}</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <p class="{{ category }} message">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <a href="{{ url_for('list_item') }}">List Item</a> | <a href="{{ url_for('buy') }}">Buy Items</a> | <a href="{{ url_for('logout') }}">Logout</a>
+    <h2>Available Items</h2>
+    {% if items %}
+        <ul>
+        {% for item in items %}
+            <li>{{ item[1] }} ({{ item[2] }}) - ${{ item[3] }} - {{ item[4] }} - Listed: {{ item[6] }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No items available.</p>
+    {% endif %}
+</body>
+</html>
